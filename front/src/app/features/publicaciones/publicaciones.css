@@ -1,0 +1,45 @@
+.encabezado {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.encabezado h1 {
+  margin: 0;
+}
+
+.etiqueta {
+  background: var(--primario-claro);
+  color: var(--primario);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.tarjeta {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.tarjeta h3 {
+  margin: 4px 0 8px;
+}
+
+.usuario {
+  margin: 0;
+  color: var(--primario);
+  font-weight: 600;
+}
+
+.acciones {
+  display: flex;
+  gap: 20px;
+  margin-top: 12px;
+  color: var(--texto-suave);
+  font-size: 0.95rem;
+}

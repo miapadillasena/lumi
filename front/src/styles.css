@@ -1,0 +1,113 @@
+:root {
+  --primario: #6c4df6;
+  --primario-claro: #ece8ff;
+  --fondo: #f4f2fb;
+  --texto: #1f1b2e;
+  --texto-suave: #6b6780;
+  --error: #e0435b;
+  --borde: #d9d5ea;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  background: var(--fondo);
+  color: var(--texto);
+}
+
+a {
+  color: var(--primario);
+}
+
+button {
+  background: var(--primario);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(1.1);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Formularios de login y registro */
+.auth-container {
+  display: flex;
+  justify-content: center;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 10px 30px rgba(108, 77, 246, 0.12);
+}
+
+.auth-card h2 {
+  margin: 0;
+}
+
+.subtitulo {
+  margin: 6px 0 24px;
+  color: var(--texto-suave);
+}
+
+.auth-card form button {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 11px 12px;
+  border: 1.5px solid var(--borde);
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primario);
+}
+
+.input-error {
+  border-color: var(--error) !important;
+}
+
+.error {
+  color: var(--error);
+  margin-top: 4px;
+}
+
+.auth-link {
+  text-align: center;
+  margin: 20px 0 0;
+}

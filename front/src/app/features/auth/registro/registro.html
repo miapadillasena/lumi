@@ -1,0 +1,167 @@
+<div class="auth-container">
+  <div class="auth-card ancha">
+    <h2>Crear cuenta</h2>
+    <p class="subtitulo">Sumate a Lumi</p>
+
+    <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
+      <div class="fila">
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input id="nombre" type="text" formControlName="nombre"
+            [class.input-error]="f.nombre.invalid && f.nombre.touched" />
+          @if (f.nombre.touched && f.nombre.invalid) {
+            @if (f.nombre.hasError('required')) {
+              <small class="error">El nombre es obligatorio</small>
+            }
+            @if (f.nombre.hasError('minlength')) {
+              <small class="error">Mínimo 2 caracteres</small>
+            }
+            @if (f.nombre.hasError('maxlength')) {
+              <small class="error">Máximo 100 caracteres</small>
+            }
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="apellido">Apellido</label>
+          <input id="apellido" type="text" formControlName="apellido"
+            [class.input-error]="f.apellido.invalid && f.apellido.touched" />
+          @if (f.apellido.touched && f.apellido.invalid) {
+            @if (f.apellido.hasError('required')) {
+              <small class="error">El apellido es obligatorio</small>
+            }
+            @if (f.apellido.hasError('minlength')) {
+              <small class="error">Mínimo 2 caracteres</small>
+            }
+            @if (f.apellido.hasError('maxlength')) {
+              <small class="error">Máximo 100 caracteres</small>
+            }
+          }
+        </div>
+      </div>
+
+      <div class="fila">
+        <div class="form-group">
+          <label for="correo">Correo electrónico</label>
+          <input id="correo" type="email" formControlName="correo" placeholder="tu@email.com"
+            [class.input-error]="f.correo.invalid && f.correo.touched" />
+          @if (f.correo.touched && f.correo.invalid) {
+            @if (f.correo.hasError('required')) {
+              <small class="error">El correo es obligatorio</small>
+            }
+            @if (f.correo.hasError('email')) {
+              <small class="error">Ingresá un correo válido</small>
+            }
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="nombreUsuario">Nombre de usuario</label>
+          <input id="nombreUsuario" type="text" formControlName="nombreUsuario"
+            [class.input-error]="f.nombreUsuario.invalid && f.nombreUsuario.touched" />
+          @if (f.nombreUsuario.touched && f.nombreUsuario.invalid) {
+            @if (f.nombreUsuario.hasError('required')) {
+              <small class="error">El nombre de usuario es obligatorio</small>
+            }
+            @if (f.nombreUsuario.hasError('minlength')) {
+              <small class="error">Mínimo 3 caracteres</small>
+            }
+            @if (f.nombreUsuario.hasError('maxlength')) {
+              <small class="error">Máximo 30 caracteres</small>
+            }
+          }
+        </div>
+      </div>
+
+      <div class="fila">
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input id="password" type="password" formControlName="password"
+            [class.input-error]="f.password.invalid && f.password.touched" />
+          @if (f.password.touched && f.password.invalid) {
+            @if (f.password.hasError('required')) {
+              <small class="error">La contraseña es obligatoria</small>
+            }
+            @if (f.password.hasError('pattern')) {
+              <small class="error">Debe tener al menos 8 caracteres, una mayúscula y un número</small>
+            }
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="repetirPassword">Repetir contraseña</label>
+          <input id="repetirPassword" type="password" formControlName="repetirPassword"
+            [class.input-error]="f.repetirPassword.touched && (f.repetirPassword.invalid || passwordsDistintas())" />
+          @if (f.repetirPassword.touched) {
+            @if (f.repetirPassword.hasError('required')) {
+              <small class="error">Repetí la contraseña</small>
+            } @else if (passwordsDistintas()) {
+              <small class="error">Las contraseñas no coinciden</small>
+            }
+          }
+        </div>
+      </div>
+
+      <div class="fila">
+        <div class="form-group">
+          <label for="fechaNacimiento">Fecha de nacimiento</label>
+          <input id="fechaNacimiento" type="date" formControlName="fechaNacimiento"
+            [class.input-error]="f.fechaNacimiento.invalid && f.fechaNacimiento.touched" />
+          @if (f.fechaNacimiento.touched && f.fechaNacimiento.hasError('required')) {
+            <small class="error">La fecha de nacimiento es obligatoria</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="imagen">Imagen de perfil</label>
+          <input id="imagen" type="file" accept="image/jpeg,image/png,image/webp"
+            (change)="seleccionarArchivo($event)"
+            [class.input-error]="archivoTocado() && !archivo()" />
+          @if (archivoTocado() && !archivo()) {
+            <small class="error">La imagen de perfil es obligatoria</small>
+          }
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="descripcion">Descripción breve</label>
+        <textarea id="descripcion" rows="3" formControlName="descripcion"
+          placeholder="Contá algo sobre vos"
+          [class.input-error]="f.descripcion.invalid && f.descripcion.touched"></textarea>
+        @if (f.descripcion.touched && f.descripcion.invalid) {
+          @if (f.descripcion.hasError('required')) {
+            <small class="error">La descripción es obligatoria</small>
+          }
+          @if (f.descripcion.hasError('maxlength')) {
+            <small class="error">Máximo 200 caracteres</small>
+          }
+        }
+      </div>
+
+      <button type="submit" [disabled]="isLoading()">
+        {{ isLoading() ? 'Registrando...' : 'Registrarme' }}
+      </button>
+    </form>
+
+    <p class="auth-link">
+      ¿Ya tenés cuenta? <a routerLink="/login">Iniciá sesión acá</a>
+    </p>
+  </div>
+</div>
+
+@if (errorMessage()) {
+  <app-modal
+    titulo="No se pudo crear la cuenta"
+    [mensaje]="errorMessage()!"
+    tipo="error"
+    (cerrar)="errorMessage.set(null)"
+  />
+}
+
+@if (exito()) {
+  <app-modal
+    titulo="¡Cuenta creada!"
+    mensaje="Tu cuenta se creó correctamente. Ya podés empezar a usar Lumi."
+    (cerrar)="irAPublicaciones()"
+  />
+}

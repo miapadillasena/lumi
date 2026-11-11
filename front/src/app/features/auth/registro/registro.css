@@ -1,0 +1,15 @@
+.ancha {
+  max-width: 640px;
+}
+
+.fila {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+
+@media (max-width: 600px) {
+  .fila {
+    grid-template-columns: 1fr;
+  }
+}

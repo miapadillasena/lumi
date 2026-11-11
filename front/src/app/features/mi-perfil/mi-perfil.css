@@ -1,0 +1,48 @@
+.perfil {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.perfil img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--primario-claro);
+}
+
+.perfil h2 {
+  margin: 0;
+}
+
+.usuario {
+  margin: 4px 0 12px;
+  color: var(--primario);
+  font-weight: 600;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+  line-height: 1.8;
+}
+
+.vacio {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .perfil {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}

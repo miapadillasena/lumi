@@ -1,0 +1,24 @@
+<section>
+  <h1>Mi perfil</h1>
+
+  @if (authService.currentUser(); as usuario) {
+    <div class="perfil">
+      <img [src]="usuario.imagenUrl" alt="Foto de perfil" />
+      <div>
+        <h2>{{ usuario.nombre }} {{ usuario.apellido }}</h2>
+        <p class="usuario">&#64;{{ usuario.nombreUsuario }}</p>
+        <p>{{ usuario.descripcion }}</p>
+        <ul>
+          <li><strong>Correo:</strong> {{ usuario.correo }}</li>
+          <li><strong>Fecha de nacimiento:</strong> {{ usuario.fechaNacimiento | date: 'dd/MM/yyyy' : 'UTC' }}</li>
+          <li><strong>Perfil:</strong> {{ usuario.perfil }}</li>
+        </ul>
+      </div>
+    </div>
+  } @else {
+    <div class="perfil vacio">
+      <p>Iniciá sesión para ver los datos de tu perfil.</p>
+      <a routerLink="/login">Ir al login</a>
+    </div>
+  }
+</section>

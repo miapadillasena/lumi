@@ -1,0 +1,17 @@
+<header class="navbar">
+  <a routerLink="/publicaciones" class="marca">
+    <img src="favicon.png" alt="" />
+    <span>Lumi</span>
+  </a>
+
+  <nav>
+    <a routerLink="/publicaciones" routerLinkActive="activo">Publicaciones</a>
+    <a routerLink="/mi-perfil" routerLinkActive="activo">Mi perfil</a>
+    @if (authService.currentUser()) {
+      <a href="#" (click)="logout(); $event.preventDefault()">Cerrar sesión</a>
+    } @else {
+      <a routerLink="/login" routerLinkActive="activo">Iniciar sesión</a>
+      <a routerLink="/registro" routerLinkActive="activo">Registrarse</a>
+    }
+  </nav>
+</header>

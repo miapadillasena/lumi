@@ -1,0 +1,18 @@
+<section>
+  <div class="encabezado">
+    <h1>Publicaciones</h1>
+    <span class="etiqueta">Vista previa</span>
+  </div>
+
+  @for (publicacion of publicaciones; track publicacion.titulo) {
+    <article class="tarjeta">
+      <p class="usuario">&#64;{{ publicacion.usuario }}</p>
+      <h3>{{ publicacion.titulo }}</h3>
+      <p>{{ publicacion.mensaje }}</p>
+      <div class="acciones">
+        <span>♥ {{ publicacion.meGusta }} me gusta</span>
+        <span>💬 {{ publicacion.comentarios }} comentarios</span>
+      </div>
+    </article>
+  }
+</section>

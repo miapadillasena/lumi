@@ -1,0 +1,7 @@
+<div class="fondo" (click)="cerrar.emit()">
+  <div class="modal" [class.error]="tipo === 'error'" (click)="$event.stopPropagation()">
+    <h3>{{ titulo }}</h3>
+    <p>{{ mensaje }}</p>
+    <button type="button" (click)="cerrar.emit()">Aceptar</button>
+  </div>
+</div>

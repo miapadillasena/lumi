@@ -1,4 +1,4 @@
-// Forma de los datos que devuelve la API en /auth/registro y /auth/login.
+
 export interface Usuario {
   id: string;
   nombre: string;

@@ -1,18 +1,106 @@
 <section>
-  <div class="encabezado">
-    <h1>Publicaciones</h1>
-    <span class="etiqueta">Vista previa</span>
+  <h1>Publicaciones</h1>
+
+  @if (authService.currentUser()) {
+    <form class="nueva" [formGroup]="publicacionForm" (ngSubmit)="publicar(inputImagen)">
+      <h2>Nueva publicación</h2>
+
+      <div class="form-group">
+        <input type="text" formControlName="titulo" placeholder="Título"
+          [class.input-error]="f.titulo.invalid && f.titulo.touched" />
+        @if (f.titulo.touched && f.titulo.invalid) {
+          @if (f.titulo.hasError('required')) {
+            <small class="error">El título es obligatorio</small>
+          }
+          @if (f.titulo.hasError('maxlength')) {
+            <small class="error">Máximo 100 caracteres</small>
+          }
+        }
+      </div>
+
+      <div class="form-group">
+        <textarea rows="3" formControlName="mensaje" placeholder="¿Qué querés compartir?"
+          [class.input-error]="f.mensaje.invalid && f.mensaje.touched"></textarea>
+        @if (f.mensaje.touched && f.mensaje.invalid) {
+          @if (f.mensaje.hasError('required')) {
+            <small class="error">El mensaje es obligatorio</small>
+          }
+          @if (f.mensaje.hasError('maxlength')) {
+            <small class="error">Máximo 1000 caracteres</small>
+          }
+        }
+      </div>
+
+      <div class="acciones">
+        <label class="archivo">
+          📷 {{ archivo() ? archivo()!.name : 'Agregar imagen (opcional)' }}
+          <input #inputImagen type="file" accept="image/jpeg,image/png,image/webp"
+            (change)="seleccionarArchivo($event)" />
+        </label>
+        <button type="submit" [disabled]="isPublicando()">
+          {{ isPublicando() ? 'Publicando...' : 'Publicar' }}
+        </button>
+      </div>
+    </form>
+  } @else {
+    <p class="aviso">
+      <a routerLink="/login">Iniciá sesión</a> para publicar y dar me gusta.
+    </p>
+  }
+
+  <div class="barra">
+    <label for="orden">Ordenar por</label>
+    <select id="orden" [value]="orden()" (change)="cambiarOrden($event)">
+      <option value="fecha">Más recientes</option>
+      <option value="meGusta">Más me gusta</option>
+    </select>
   </div>
 
-  @for (publicacion of publicaciones; track publicacion.titulo) {
-    <article class="tarjeta">
-      <p class="usuario">&#64;{{ publicacion.usuario }}</p>
-      <h3>{{ publicacion.titulo }}</h3>
-      <p>{{ publicacion.mensaje }}</p>
-      <div class="acciones">
-        <span>♥ {{ publicacion.meGusta }} me gusta</span>
-        <span>💬 {{ publicacion.comentarios }} comentarios</span>
-      </div>
-    </article>
+  @if (isLoading()) {
+    <p class="aviso">Cargando publicaciones...</p>
+  } @else {
+    @for (publicacion of publicaciones(); track publicacion.id) {
+      <app-publicacion-card
+        [publicacion]="publicacion"
+        [usuarioActualId]="authService.currentUser()?.id ?? null"
+        (meGusta)="toggleMeGusta($event)"
+        (eliminar)="aEliminar.set($event)"
+      />
+    } @empty {
+      <p class="aviso">Todavía no hay publicaciones.</p>
+    }
+  }
+
+  @if (totalPaginas() > 1) {
+    <nav class="paginacion">
+      <button type="button" [disabled]="pagina() === 1" (click)="irAPagina(pagina() - 1)">
+        ‹ Anterior
+      </button>
+      <span>Página {{ pagina() }} de {{ totalPaginas() }}</span>
+      <button type="button" [disabled]="pagina() === totalPaginas()" (click)="irAPagina(pagina() + 1)">
+        Siguiente ›
+      </button>
+    </nav>
   }
 </section>
+
+@if (aEliminar()) {
+  <app-modal
+    titulo="Eliminar publicación"
+    [mensaje]="'¿Seguro que querés eliminar «' + aEliminar()!.titulo + '»?'"
+    tipo="error"
+    textoAceptar="Eliminar"
+    [mostrarCancelar]="true"
+    (cerrar)="confirmarEliminar()"
+    (cancelar)="aEliminar.set(null)"
+  />
+}
+
+@if (errorMessage()) {
+  <app-modal
+    titulo="Algo salió mal"
+    [mensaje]="errorMessage()!"
+    tipo="error"
+    (cerrar)="errorMessage.set(null)"
+  />
+}

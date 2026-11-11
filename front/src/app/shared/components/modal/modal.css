@@ -32,3 +32,14 @@
   margin: 0 0 22px;
   color: var(--texto-suave);
 }
+
+.botones {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.secundario {
+  background: var(--primario-claro);
+  color: var(--primario);
+}

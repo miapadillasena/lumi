@@ -46,3 +46,27 @@ ul {
     text-align: center;
   }
 }
+
+.titulo-seccion {
+  margin: 32px 0 16px;
+}
+
+.con-comentarios {
+  margin-bottom: 20px;
+}
+
+.comentarios {
+  background: var(--primario-claro);
+  border-radius: 16px;
+  margin-top: -8px;
+  padding: 12px 24px;
+}
+
+.comentarios p {
+  margin: 4px 0 0;
+  color: var(--texto-suave);
+}
+
+.vacio-texto {
+  color: var(--texto-suave);
+}

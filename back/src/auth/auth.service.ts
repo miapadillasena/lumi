@@ -14,7 +14,7 @@ export class AuthService {
 
   async registro(datos: RegistroDto, archivo?: Express.Multer.File) {
     this.cloudinary.validar(archivo);
-    const imagenUrl = await this.cloudinary.subir(archivo!);
+    const imagenUrl = await this.cloudinary.subir(archivo!, 'perfiles');
 
     const usuario = await this.usuarios.crear({
       nombre: datos.nombre,
@@ -29,7 +29,7 @@ export class AuthService {
     });
 
     return {
-      id: usuario.id as string,
+      id: usuario.id,
       nombre: usuario.nombre,
       apellido: usuario.apellido,
       correo: usuario.correo,
@@ -54,7 +54,7 @@ export class AuthService {
     }
 
     return {
-      id: usuario.id as string,
+      id: usuario.id,
       nombre: usuario.nombre,
       apellido: usuario.apellido,
       correo: usuario.correo,

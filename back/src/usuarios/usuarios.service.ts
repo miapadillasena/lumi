@@ -1,6 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, mongo } from 'mongoose';
+import { Model, isObjectIdOrHexString, mongo } from 'mongoose';
 import { Usuario } from './usuario.schema';
 
 @Injectable()
@@ -22,5 +22,14 @@ export class UsuariosService {
 
   async buscarPorCorreo(correo: string) {
     return await this.usuarioModel.findOne({ correo });
+  }
+
+  async buscarPorId(id: string) {
+    if (!isObjectIdOrHexString(id)) return null;
+    return await this.usuarioModel.findById(id);
+  }
+
+  async buscarPorIds(ids: string[]) {
+    return await this.usuarioModel.find({ _id: { $in: ids } });
   }
 }

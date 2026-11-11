@@ -37,13 +37,13 @@ export class CloudinaryService {
     }
   }
 
-  subir(archivo: Express.Multer.File): Promise<string> {
-    return new Promise((resolve, reject) => { 
+  subir(archivo: Express.Multer.File, carpeta: string): Promise<string> {
+    return new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
         {
           resource_type: 'image',
           type: 'upload',
-          public_id: `red-social/perfiles/${randomUUID()}`,
+          public_id: `red-social/${carpeta}/${randomUUID()}`,
           overwrite: false,
         },
         (error, resultado) => {
@@ -56,7 +56,6 @@ export class CloudinaryService {
         },
       );
       stream.end(archivo.buffer);
-    }); 
-    
+    });
   }
 }

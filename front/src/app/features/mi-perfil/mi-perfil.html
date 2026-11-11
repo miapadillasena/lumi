@@ -15,6 +15,19 @@
         </ul>
       </div>
     </div>
+
+    <h2 class="titulo-seccion">Mis últimas publicaciones</h2>
+    @for (publicacion of ultimas(); track publicacion.id) {
+      <div class="con-comentarios">
+        <app-publicacion-card [publicacion]="publicacion" [usuarioActualId]="null" />
+        <div class="comentarios">
+          <strong>Comentarios</strong>
+          <p>Todavía no hay comentarios.</p>
+        </div>
+      </div>
+    } @empty {
+      <p class="vacio-texto">Todavía no hiciste ninguna publicación.</p>
+    }
   } @else {
     <div class="perfil vacio">
       <p>Iniciá sesión para ver los datos de tu perfil.</p>

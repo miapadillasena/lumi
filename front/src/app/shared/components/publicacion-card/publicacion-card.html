@@ -1,0 +1,35 @@
+<article class="tarjeta">
+  <header>
+    @if (publicacion.usuario.imagenUrl) {
+      <img class="avatar" [src]="publicacion.usuario.imagenUrl" alt="" />
+    } @else {
+      <div class="avatar vacio"></div>
+    }
+    <div>
+      <p class="usuario">&#64;{{ publicacion.usuario.nombreUsuario }}</p>
+      <p class="fecha">{{ publicacion.fecha | date: 'dd/MM/yyyy HH:mm' }}</p>
+    </div>
+    @if (esMia()) {
+      <button type="button" class="eliminar" (click)="eliminar.emit(publicacion)">Eliminar</button>
+    }
+  </header>
+
+  <h3>{{ publicacion.titulo }}</h3>
+  <p class="mensaje">{{ publicacion.mensaje }}</p>
+
+  @if (publicacion.imagenUrl) {
+    <img class="imagen" [src]="publicacion.imagenUrl" alt="Imagen de la publicación" />
+  }
+
+  <footer>
+    <button
+      type="button"
+      class="me-gusta"
+      [class.activo]="leDiMeGusta()"
+      [disabled]="!usuarioActualId"
+      (click)="meGusta.emit(publicacion)"
+    >
+      {{ leDiMeGusta() ? '♥' : '♡' }} {{ publicacion.cantidadMeGusta }} me gusta
+    </button>
+  </footer>
+</article>

@@ -7,7 +7,7 @@ import { Usuario } from '../models/usuario.interface';
 export class AuthService {
   private http = inject(HttpClient);
   private url = environment.apiUrl + '/auth';
-  currentUser = signal<Usuario | null>(null);
+  currentUser = signal<Usuario | null>(this.leerUsuarioGuardado());
 
   login(correo: string, password: string) {
     return this.http.post<Usuario>(this.url + '/login', { correo, password });
@@ -19,9 +19,16 @@ export class AuthService {
 
   iniciarSesion(usuario: Usuario) {
     this.currentUser.set(usuario);
+    localStorage.setItem('usuario', JSON.stringify(usuario));
   }
 
   cerrarSesion() {
     this.currentUser.set(null);
+    localStorage.removeItem('usuario');
+  }
+
+  private leerUsuarioGuardado(): Usuario | null {
+    const guardado = localStorage.getItem('usuario');
+    return guardado ? JSON.parse(guardado) : null;
   }
 }

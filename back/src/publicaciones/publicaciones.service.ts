@@ -59,7 +59,7 @@ export class PublicacionesService {
       .find(condicion)
       .sort(orden)
       .skip(offset) // saltea las paginas anteriores
-      .limit(limit +1 ) // trae una mas de las pedidas
+      .limit(limit) // trae una mas de las pedidas
       .exec(); 
     const total = await this.publicacionModel.countDocuments(condicion);
 

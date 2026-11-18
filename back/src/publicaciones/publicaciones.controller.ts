@@ -18,10 +18,10 @@ import {
   ListarPublicacionesDto,
   UsuarioIdDto,
 } from './publicacion.dto';
-
+// puerta de entrada de todo lo de publicaciones, define 5 rutas
 @Controller('publicaciones')
 export class PublicacionesController {
-  constructor(private readonly publicacionesService: PublicacionesService) {}
+  constructor(private readonly publicacionesService: PublicacionesService) {} // recibe los datos y se los pasa al PublicacionesSrervice
 
   @Post()
   @UseInterceptors(

@@ -10,13 +10,13 @@ import {
   Min,
   MinLength,
 } from 'class-validator';
-
+// que datos tiene que mandar al front y como se vvalidan
 export class UsuarioIdDto {
   @IsMongoId({ message: 'El usuarioId no es válido' })
-  usuarioId!: string;
+  usuarioId!: string; // que tenga el formato de id de mongo
 }
 
-export class CrearPublicacionDto extends UsuarioIdDto {
+export class CrearPublicacionDto extends UsuarioIdDto { // hereda del campo Usuario
   @IsString()
   @MinLength(1, { message: 'El título es obligatorio' })
   @MaxLength(100, { message: 'El título admite como máximo 100 caracteres' })
@@ -26,10 +26,10 @@ export class CrearPublicacionDto extends UsuarioIdDto {
   @MinLength(1, { message: 'El mensaje es obligatorio' })
   @MaxLength(1000, { message: 'El mensaje admite como máximo 1000 caracteres' })
   mensaje!: string;
-}
+} // datos para crear una publicacion
 
 export class ListarPublicacionesDto {
-  @IsOptional()
+  @IsOptional() // opcionales. 
   @IsIn(['fecha', 'meGusta'], {
     message: 'El orden debe ser "fecha" o "meGusta"',
   })
@@ -43,7 +43,7 @@ export class ListarPublicacionesDto {
   @Transform(({ value }: { value: string }) => Number(value))
   @IsInt({ message: 'El offset debe ser un número entero' })
   @Min(0, { message: 'El offset no puede ser negativo' })
-  offset?: number;
+  offset?: number; // todo llega como texto, asi que lo transfoorma a numero antes de validarlo
 
   @IsOptional()
   @Transform(({ value }: { value: string }) => Number(value))

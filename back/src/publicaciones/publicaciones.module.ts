@@ -8,9 +8,9 @@ import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Module({
   imports: [
-    UsuariosModule,
+    UsuariosModule, // lo usa para verificar el usuario
     MongooseModule.forFeature([
-      { name: Publicacion.name, schema: PublicacionSchema },
+      { name: Publicacion.name, schema: PublicacionSchema }, // el nombre con el que se registra
     ]),
   ],
   controllers: [PublicacionesController],

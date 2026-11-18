@@ -9,14 +9,14 @@ import { PublicacionesModule } from './publicaciones/publicaciones.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-    MongooseModule.forRootAsync({
+    ConfigModule.forRoot({ isGlobal: true }), // lee el .env
+    MongooseModule.forRootAsync({ // se conecta a mongo
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        uri: config.getOrThrow<string>('MONGODB_URI'),
+      useFactory: (config: ConfigService) => ({ // arma las opciones de conexion
+        uri: config.getOrThrow<string>('MONGODB_URI'), // toma el URI de Atlas, si la variable no exite la app no arranca
       }),
-    }),
+    }), // los tres modulos
     UsuariosModule,
     AuthModule,
     PublicacionesModule,

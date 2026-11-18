@@ -10,7 +10,7 @@ import { Publicacion } from './publicacion.schema';
 import { CrearPublicacionDto, ListarPublicacionesDto } from './publicacion.dto';
 import { UsuariosService } from '../usuarios/usuarios.service';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
-
+// Toda la logica de las publicaciones. 
 type PublicacionDocument = HydratedDocument<Publicacion>;
 
 @Injectable()
@@ -18,19 +18,19 @@ export class PublicacionesService {
   constructor(
     @InjectModel(Publicacion.name)
     private readonly publicacionModel: Model<Publicacion>,
-    private readonly usuarios: UsuariosService,
-    private readonly cloudinary: CloudinaryService,
-  ) {}
+    private readonly usuarios: UsuariosService, // para verificar que el usuario exista y traer los datos del autor
+    private readonly cloudinary: CloudinaryService, // para la imagen opcional
+  ) {} 
 
   async crear(datos: CrearPublicacionDto, archivo?: Express.Multer.File) {
     const usuario = await this.usuarios.buscarPorId(datos.usuarioId);
     if (!usuario) throw new NotFoundException('El usuario no existe');
-
+    // Verifica que el usuario exista, si no, responde 404
     let imagenUrl = '';
-    if (archivo) {
+    if (archivo) { // si hay imagen la valida y la sube a la carpeta
       this.cloudinary.validar(archivo);
       imagenUrl = await this.cloudinary.subir(archivo, 'publicaciones');
-    }
+    } 
 
     const publicacion = await this.publicacionModel.create({
       usuarioId: datos.usuarioId,
@@ -39,28 +39,28 @@ export class PublicacionesService {
       imagenUrl: imagenUrl,
     });
     return (await this.armarRespuesta([publicacion]))[0];
-  }
+  } // devuelve la publicaion con los datos del autor. 
 
-  async listar(filtros: ListarPublicacionesDto) {
+  async listar(filtros: ListarPublicacionesDto) { // trae las que no estan elliminadas. 
     const condicion: { eliminada: boolean; usuarioId?: string } = {
       eliminada: false,
     };
     if (filtros.usuarioId) condicion.usuarioId = filtros.usuarioId;
 
     const orden: Record<string, 1 | -1> =
-      filtros.orden === 'meGusta'
-        ? { cantidadMeGusta: -1, createdAt: -1 }
-        : { createdAt: -1 };
+      filtros.orden === 'meGusta' // las nuevas van primero, de mayor a menor
+        ? { cantidadMeGusta: -1, createdAt: -1 } 
+        : { createdAt: -1 }; // las que tienen mas me gusta van primero, y si empatan va la mas nueva
 
-    const offset = filtros.offset ?? 0;
+    const offset = filtros.offset ?? 0; // valores por defecto
     const limit = filtros.limit ?? 10;
 
     const publicaciones = await this.publicacionModel
       .find(condicion)
       .sort(orden)
-      .skip(offset)
-      .limit(limit)
-      .exec();
+      .skip(offset) // saltea las paginas anteriores
+      .limit(limit +1 ) // trae una mas de las pedidas
+      .exec(); 
     const total = await this.publicacionModel.countDocuments(condicion);
 
     return {
@@ -74,10 +74,10 @@ export class PublicacionesService {
   async eliminar(id: string, usuarioId: string) {
     const publicacion = await this.buscar(id);
     const usuario = await this.usuarios.buscarPorId(usuarioId);
-    if (!usuario) throw new NotFoundException('El usuario no existe');
+    if (!usuario) throw new NotFoundException('El usuario no existe'); // busca la publicacion y el usuario
 
     const esAutor = publicacion.usuarioId === usuarioId;
-    const esAdmin = usuario.perfil === 'administrador';
+    const esAdmin = usuario.perfil === 'administrador'; // solo se puede eliminar si es administrador, o el autor de la publicacion
     if (!esAutor && !esAdmin) {
       throw new ForbiddenException(
         'Solo el autor o un administrador puede eliminar esta publicación',
@@ -93,22 +93,22 @@ export class PublicacionesService {
     const usuario = await this.usuarios.buscarPorId(usuarioId);
     if (!usuario) throw new NotFoundException('El usuario no existe');
 
-    if (publicacion.meGusta.includes(usuarioId)) {
+    if (publicacion.meGusta.includes(usuarioId)) { // es un array con los ids de quienes ya dieron su me gusta
       throw new ConflictException('Ya le diste me gusta a esta publicación');
-    }
+    } 
 
-    publicacion.meGusta.push(usuarioId);
+    publicacion.meGusta.push(usuarioId); // si no le dio like, lo actualiza
     publicacion.cantidadMeGusta = publicacion.meGusta.length;
     await publicacion.save();
-    return (await this.armarRespuesta([publicacion]))[0];
+    return (await this.armarRespuesta([publicacion]))[0]; 
   }
 
   async quitarMeGusta(id: string, usuarioId: string) {
-    const publicacion = await this.buscar(id);
+    const publicacion = await this.buscar(id); // solo le puede quitar si ya le dio antes. 
 
     if (!publicacion.meGusta.includes(usuarioId)) {
-      throw new NotFoundException(
-        'No le habías dado me gusta a esta publicación',
+      throw new NotFoundException( 
+        'No le habías dado me gusta a esta publicación', 
       );
     }
 
@@ -118,8 +118,8 @@ export class PublicacionesService {
     return (await this.armarRespuesta([publicacion]))[0];
   }
 
-  private async buscar(id: string) {
-    if (!isObjectIdOrHexString(id)) {
+  private async buscar(id: string) { // se usa para eliminar y para los me gusta
+    if (!isObjectIdOrHexString(id)) { // revisa que el id tenga un fomrato valido
       throw new NotFoundException('Publicación no encontrada');
     }
     const publicacion = await this.publicacionModel.findById(id);
@@ -127,7 +127,7 @@ export class PublicacionesService {
       throw new NotFoundException('Publicación no encontrada');
     }
     return publicacion;
-  }
+  } 
 
   private async armarRespuesta(publicaciones: PublicacionDocument[]) {
     const ids = publicaciones.map((p) => p.usuarioId);

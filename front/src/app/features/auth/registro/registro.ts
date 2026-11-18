@@ -16,7 +16,7 @@ export class Registro {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  registroForm = this.fb.group({
+  registroForm = this.fb.group({ // todos los campos obligatorios
     nombre: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
     apellido: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
     correo: ['', [Validators.required, Validators.email]],
@@ -40,7 +40,7 @@ export class Registro {
     return this.registroForm.controls;
   }
 
-  passwordsDistintas() {
+  passwordsDistintas() { // compara los dos campos
     return this.f.repetirPassword.value !== this.f.password.value;
   }
 
@@ -71,7 +71,7 @@ export class Registro {
     datos.append('fechaNacimiento', valores.fechaNacimiento!);
     datos.append('descripcion', valores.descripcion!);
     datos.append('imagen', this.archivo()!);
-
+      // se arma un FormData porque no se puede mandar JSON
     this.authService.registro(datos).subscribe({
       next: (usuario) => {
         this.authService.iniciarSesion(usuario);
@@ -88,5 +88,5 @@ export class Registro {
   irAPublicaciones() {
     this.exito.set(false);
     this.router.navigate(['/publicaciones']);
-  }
+  } // al tocar aceptar, y te lleva directamente a publicacionrs. 
 }

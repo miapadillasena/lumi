@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-
+// define las rutas del front
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
@@ -16,8 +16,8 @@ export const routes: Routes = [
       import('./features/publicaciones/publicaciones').then((c) => c.Publicaciones),
   },
   {
-    path: 'mi-perfil',
+    path: 'mi-perfil', // incluso sin estar logueada permite entrar
     loadComponent: () => import('./features/mi-perfil/mi-perfil').then((c) => c.MiPerfil),
   },
-  { path: '**', redirectTo: '/login' },
+  { path: '**', redirectTo: '/login' }, // poniendo cualquier cosa, todo manda al login
 ];

@@ -7,7 +7,7 @@ import { apiError } from '../../core/services/api-error';
 import { Publicacion } from '../../core/models/publicacion.interface';
 import { PublicacionCard } from '../../shared/components/publicacion-card/publicacion-card';
 import { Modal } from '../../shared/components/modal/modal';
-
+// componente de la pagina publicaciones
 @Component({
   selector: 'app-publicaciones',
   imports: [ReactiveFormsModule, RouterLink, PublicacionCard, Modal],
@@ -19,17 +19,17 @@ export class Publicaciones implements OnInit {
   private publicacionesService = inject(PublicacionesService);
   authService = inject(AuthService);
 
-  readonly porPagina = 5;
+  readonly porPagina = 5; // 5 publicaciones por pagina
 
   publicaciones = signal<Publicacion[]>([]);
   total = signal(0);
-  pagina = signal(1);
+  pagina = signal(1); // para saber donde estas y como se ordena
   orden = signal('fecha');
-  isLoading = signal(false);
-  isPublicando = signal(false);
+  isLoading = signal(false); // mientras se carga la lista
+  isPublicando = signal(false); // mientras que se envia una publicacion nueva
   errorMessage = signal<string | null>(null);
   aEliminar = signal<Publicacion | null>(null);
-  archivo = signal<File | null>(null);
+  archivo = signal<File | null>(null); // imagen opcional
 
   publicacionForm = this.fb.group({
     titulo: ['', [Validators.required, Validators.maxLength(100)]],
@@ -40,7 +40,7 @@ export class Publicaciones implements OnInit {
     return this.publicacionForm.controls;
   }
 
-  ngOnInit() {
+  ngOnInit() { // carga la lista apenas se abre la pagina
     this.cargar();
   }
 
@@ -84,7 +84,7 @@ export class Publicaciones implements OnInit {
     const usuario = this.authService.currentUser();
     if (!usuario) return;
     this.publicacionForm.markAllAsTouched();
-    if (this.publicacionForm.invalid) return;
+    if (this.publicacionForm.invalid) return; // so no hay nadie logueado o el formulario es invalido no hace nada
 
     const datos = new FormData();
     datos.append('usuarioId', usuario.id);

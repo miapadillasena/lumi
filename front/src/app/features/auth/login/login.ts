@@ -4,16 +4,16 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { apiError } from '../../../core/services/api-error';
 import { Modal } from '../../../shared/components/modal/modal';
-
+// pantalla de login
 @Component({
-  selector: 'app-login',
+  selector: 'app-login', 
   imports: [ReactiveFormsModule, RouterLink, Modal],
   templateUrl: './login.html',
 })
 export class Login {
   private fb = inject(FormBuilder);
-  private authService = inject(AuthService);
-  private router = inject(Router);
+  private authService = inject(AuthService); // llamar al back
+  private router = inject(Router); // navegar a otra pantalla
 
   loginForm = this.fb.group({
     correo: ['', [Validators.required, Validators.email]],
@@ -23,15 +23,15 @@ export class Login {
     ],
   });
 
-  isLoading = signal(false);
-  errorMessage = signal<string | null>(null);
+  isLoading = signal(false); // esperando la respuesta del back
+  errorMessage = signal<string | null>(null); //guarda el texto del error 
 
   get f() {
     return this.loginForm.controls;
   }
 
-  onSubmit() {
-    this.loginForm.markAllAsTouched();
+  onSubmit() { // se ejecuta al poner ingresar
+    this.loginForm.markAllAsTouched(); // marca todos los campos como tocados asi aparecen todos los mensajes de error
     if (this.loginForm.invalid) return;
 
     this.isLoading.set(true);

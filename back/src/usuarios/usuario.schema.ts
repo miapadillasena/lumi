@@ -29,5 +29,5 @@ export class Usuario {
   @Prop({ default: 'usuario', enum: ['usuario', 'administrador'] }) // si no se manda algo, queda "usuario", y enum limita los valores posibles a usuario o administrador. 
   perfil: string;
 }
-
+7
 export const UsuarioSchema = SchemaFactory.createForClass(Usuario); // convierte la clase en el schema real que usa Mongoose

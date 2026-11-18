@@ -11,12 +11,7 @@ import {
   MinLength,
 } from 'class-validator';
 // que datos tiene que mandar al front y como se vvalidan
-export class UsuarioIdDto {
-  @IsMongoId({ message: 'El usuarioId no es válido' })
-  usuarioId!: string; // que tenga el formato de id de mongo
-}
-
-export class CrearPublicacionDto extends UsuarioIdDto { // hereda del campo Usuario
+export class CrearPublicacionDto {
   @IsString()
   @MinLength(1, { message: 'El título es obligatorio' })
   @MaxLength(100, { message: 'El título admite como máximo 100 caracteres' })
@@ -28,17 +23,7 @@ export class CrearPublicacionDto extends UsuarioIdDto { // hereda del campo Usua
   mensaje!: string;
 } // datos para crear una publicacion
 
-export class ListarPublicacionesDto {
-  @IsOptional() // opcionales. 
-  @IsIn(['fecha', 'meGusta'], {
-    message: 'El orden debe ser "fecha" o "meGusta"',
-  })
-  orden?: string;
-
-  @IsOptional()
-  @IsMongoId({ message: 'El usuarioId no es válido' })
-  usuarioId?: string;
-
+export class PaginacionDto {
   @IsOptional()
   @Transform(({ value }: { value: string }) => Number(value))
   @IsInt({ message: 'El offset debe ser un número entero' })
@@ -52,3 +37,18 @@ export class ListarPublicacionesDto {
   @Max(50, { message: 'El limit admite como máximo 50' })
   limit?: number;
 }
+
+export class ListarPublicacionesDto extends PaginacionDto {
+  @IsOptional() // opcionales.
+  @IsIn(['fecha', 'meGusta'], {
+    message: 'El orden debe ser "fecha" o "meGusta"',
+  })
+  orden?: string;
+
+  @IsOptional()
+  @IsMongoId({ message: 'El usuarioId no es válido' })
+  usuarioId?: string;
+}
+
+
+// saque UsuarioIdDto porque no hace falta ya

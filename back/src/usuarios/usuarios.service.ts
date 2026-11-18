@@ -24,6 +24,14 @@ export class UsuariosService {
     return await this.usuarioModel.findOne({ correo });
   }
 
+    async actualizar(id: string, cambios: Partial<Usuario>) { // tiene algunos campos de Usuario, no necesariamente toods
+    return await this.usuarioModel.findByIdAndUpdate( // busca el usuario por id y le cambia solo los campos que vienen en cambios
+      id,
+      { $set: cambios }, // operador de mongo 
+      { new: true, runValidators: true }, // devulve el usuario ya actualizado
+    );
+  }
+  
   async buscarPorId(id: string) {
     if (!isObjectIdOrHexString(id)) return null;
     return await this.usuarioModel.findById(id);

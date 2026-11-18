@@ -23,7 +23,7 @@ export class Usuario {
   @Prop({ required: true })
   descripcion: string;
 
-  @Prop({ required: true })
+   @Prop({ default: '' })
   imagenUrl: string;
 
   @Prop({ default: 'usuario', enum: ['usuario', 'administrador'] }) // si no se manda algo, queda "usuario", y enum limita los valores posibles a usuario o administrador. 

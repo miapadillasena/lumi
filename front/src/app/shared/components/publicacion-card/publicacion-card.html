@@ -1,10 +1,11 @@
-<article class="tarjeta">
+<article class="tarjeta" [class.grande]="grande">
   <header>
-    @if (publicacion.usuario.imagenUrl) {
-      <img class="avatar" [src]="publicacion.usuario.imagenUrl" alt="" />
-    } @else {
-      <div class="avatar vacio"></div>
-    }
+    <app-avatar
+      [imagenUrl]="publicacion.usuario.imagenUrl"
+      [nombre]="publicacion.usuario.nombre"
+      [apellido]="publicacion.usuario.apellido"
+    />
+  
     <div>
       <p class="usuario">&#64;{{ publicacion.usuario.nombreUsuario }}</p>
       <p class="fecha">{{ publicacion.fecha | date: 'dd/MM/yyyy HH:mm' }}</p>
@@ -14,9 +15,11 @@
     }
   </header>
 
-  <h3>{{ publicacion.titulo }}</h3>
-  <p class="mensaje">{{ publicacion.mensaje }}</p>
-
+  @if (grande) {
+    <h2>{{ publicacion.titulo }}</h2>
+  } @else {
+    <h3><a [routerLink]="['/publicacion', publicacion.id]">{{ publicacion.titulo }}</a></h3>
+  }
   @if (publicacion.imagenUrl) {
     <img class="imagen" [src]="publicacion.imagenUrl" alt="Imagen de la publicación" />
   }

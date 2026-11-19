@@ -1,0 +1,102 @@
+<section>
+  <a routerLink="/publicaciones" class="volver">‹ Volver a publicaciones</a>
+
+  @if (isLoading()) {
+    <p class="aviso">Cargando publicación...</p>
+  } @else if (publicacion(); as publicacion) {
+    <app-publicacion-card
+      [publicacion]="publicacion"
+      [usuarioActualId]="authService.currentUser()?.id ?? null"
+      [grande]="true"
+      (meGusta)="toggleMeGusta($event)"
+      (eliminar)="aEliminar.set(true)"
+    />
+
+    <div class="comentarios">
+      <h2>Comentarios</h2>
+
+      <form [formGroup]="comentarioForm" (ngSubmit)="comentar()">
+        <textarea rows="2" formControlName="mensaje" placeholder="Escribí un comentario..."></textarea>
+        @if (comentarioForm.controls.mensaje.touched && comentarioForm.controls.mensaje.invalid) {
+          @if (comentarioForm.controls.mensaje.hasError('maxlength')) {
+            <small class="error">Máximo 500 caracteres</small>
+          } @else {
+            <small class="error">El comentario no puede estar vacío</small>
+          }
+        }
+        <button type="submit" [disabled]="isEnviando()">
+          {{ isEnviando() ? 'Enviando...' : 'Comentar' }}
+        </button>
+      </form>
+
+      @for (comentario of comentarios(); track comentario.id) {
+        <div class="comentario">
+          <app-avatar
+            [imagenUrl]="comentario.usuario.imagenUrl"
+            [nombre]="comentario.usuario.nombre"
+            [apellido]="comentario.usuario.apellido"
+            [tamano]="38"
+          />
+          <div class="cuerpo">
+            <p class="cabecera">
+              <span class="usuario">&#64;{{ comentario.usuario.nombreUsuario }}</span>
+              <span class="fecha">{{ comentario.fecha | date: 'dd/MM/yyyy HH:mm' }}</span>
+              @if (comentario.modificado) {
+                <span class="editado">(editado)</span>
+              }
+            </p>
+
+            @if (editandoId() === comentario.id) {
+              <form [formGroup]="edicionForm" (ngSubmit)="guardarEdicion(comentario)">
+                <textarea rows="2" formControlName="mensaje"></textarea>
+                @if (edicionForm.controls.mensaje.invalid) {
+                  <small class="error">El comentario debe tener entre 1 y 500 caracteres</small>
+                }
+                <div class="botones">
+                  <button type="button" class="secundario" (click)="editandoId.set(null)">Cancelar</button>
+                  <button type="submit">Guardar</button>
+                </div>
+              </form>
+            } @else {
+              <p class="mensaje">{{ comentario.mensaje }}</p>
+              @if (comentario.usuario.id === authService.currentUser()?.id) {
+                <button type="button" class="editar" (click)="empezarEdicion(comentario)">Editar</button>
+              }
+            }
+          </div>
+        </div>
+      } @empty {
+        @if (!isCargandoMas()) {
+          <p class="aviso">Todavía no hay comentarios.</p>
+        }
+      }
+
+      @if (hayMas()) {
+        <button type="button" class="cargar-mas" [disabled]="isCargandoMas()" (click)="cargarComentarios()">
+          {{ isCargandoMas() ? 'Cargando...' : 'Cargar más' }}
+        </button>
+      }
+    </div>
+  }
+</section>
+
+@if (aEliminar()) {
+  <app-modal
+    titulo="Eliminar publicación"
+    mensaje="¿Seguro que querés eliminar esta publicación?"
+    tipo="error"
+    textoAceptar="Eliminar"
+    [mostrarCancelar]="true"
+    (cerrar)="confirmarEliminar()"
+    (cancelar)="aEliminar.set(false)"
+  />
+}
+
+@if (errorMessage()) {
+  <app-modal
+    titulo="Algo salió mal"
+    [mensaje]="errorMessage()!"
+    tipo="error"
+    (cerrar)="errorMessage.set(null)"
+  />
+}

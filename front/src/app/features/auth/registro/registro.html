@@ -113,13 +113,9 @@
         </div>
 
         <div class="form-group">
-          <label for="imagen">Imagen de perfil</label>
+          <label for="imagen">Imagen de perfil (opcional)</label>
           <input id="imagen" type="file" accept="image/jpeg,image/png,image/webp"
-            (change)="seleccionarArchivo($event)"
-            [class.input-error]="archivoTocado() && !archivo()" />
-          @if (archivoTocado() && !archivo()) {
-            <small class="error">La imagen de perfil es obligatoria</small>
-          }
+            (change)="seleccionarArchivo($event)" />
         </div>
       </div>
 

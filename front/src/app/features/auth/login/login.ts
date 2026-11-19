@@ -38,8 +38,8 @@ export class Login {
     const { correo, password } = this.loginForm.value;
 
     this.authService.login(correo!, password!).subscribe({
-      next: (usuario) => {
-        this.authService.iniciarSesion(usuario);
+       next: (sesion) => {
+        this.authService.iniciarSesion(sesion);
         this.isLoading.set(false);
         this.router.navigate(['/publicaciones']);
       },

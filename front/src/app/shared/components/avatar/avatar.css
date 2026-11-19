@@ -1,0 +1,22 @@
+:host {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+img,
+.iniciales {
+  border-radius: 50%;
+}
+
+img {
+  object-fit: cover;
+}
+
+.iniciales {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primario);
+  color: #fff;
+  font-weight: 700;
+}

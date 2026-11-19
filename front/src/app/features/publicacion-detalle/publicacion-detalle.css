@@ -1,0 +1,126 @@
+section {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.volver {
+  display: inline-block;
+  margin-bottom: 16px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.aviso {
+  text-align: center;
+  color: var(--texto-suave);
+  margin: 24px 0;
+}
+
+.comentarios {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px 24px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.comentarios h2 {
+  margin: 0 0 14px;
+  font-size: 1.2rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+form button {
+  align-self: flex-end;
+  padding: 8px 18px;
+}
+
+textarea {
+  padding: 10px 12px;
+  border: 1.5px solid var(--borde);
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--primario);
+}
+
+.comentario {
+  display: flex;
+  gap: 12px;
+  padding: 14px 0;
+  border-top: 1px solid var(--borde);
+}
+
+.cuerpo {
+  flex: 1;
+  min-width: 0;
+}
+
+.cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: baseline;
+  margin: 0;
+}
+
+.usuario {
+  color: var(--primario);
+  font-weight: 600;
+}
+
+.fecha,
+.editado {
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+
+.editado {
+  font-style: italic;
+}
+
+.mensaje {
+  margin: 4px 0 0;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.editar {
+  background: transparent;
+  color: var(--primario);
+  padding: 4px 0;
+  font-size: 0.85rem;
+}
+
+.botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.botones button {
+  align-self: auto;
+}
+
+.secundario {
+  background: var(--primario-claro);
+  color: var(--primario);
+}
+
+.cargar-mas {
+  display: block;
+  margin: 12px auto 0;
+  background: var(--primario-claro);
+  color: var(--primario);
+  padding: 8px 20px;
+}

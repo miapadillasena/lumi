@@ -9,6 +9,8 @@ export interface Publicacion {
   usuario: {
     id: string;
     nombreUsuario: string;
+    nombre: string;
+    apellido: string;
     imagenUrl: string;
   };
 }

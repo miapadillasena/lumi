@@ -8,14 +8,6 @@
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
 }
 
-.perfil img {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid var(--primario-claro);
-}
-
 .perfil h2 {
   margin: 0;
 }
@@ -31,12 +23,6 @@ ul {
   padding: 0;
   margin: 12px 0 0;
   line-height: 1.8;
-}
-
-.vacio {
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
 }
 
 @media (max-width: 600px) {
@@ -69,4 +55,56 @@ ul {
 
 .vacio-texto {
   color: var(--texto-suave);
+}
+
+.comentarios .comentario {
+  color: var(--texto);
+  overflow-wrap: anywhere;
+}
+
+.autor {
+  color: var(--primario);
+  font-weight: 600;
+}
+
+.comentarios em {
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+
+.comentarios a {
+  display: inline-block;
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.datos {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.editar {
+  margin-top: 12px;
+  padding: 8px 18px;
+}
+
+.editar-form {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+
+.editar-form h2 {
+  margin-bottom: 16px;
+}
+
+.botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.secundario {
+  background: var(--primario-claro);
+  color: var(--primario);
 }

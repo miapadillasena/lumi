@@ -9,4 +9,9 @@ export interface Usuario {
   descripcion: string;
   imagenUrl: string;
   perfil: 'usuario' | 'administrador';
-}
+} 
+
+export interface Sesion {
+  access_token: string;
+  usuario: Usuario;
+} 

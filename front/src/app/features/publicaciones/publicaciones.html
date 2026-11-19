@@ -1,7 +1,6 @@
 <section>
   <h1>Publicaciones</h1>
 
-  @if (authService.currentUser()) {
     <form class="nueva" [formGroup]="publicacionForm" (ngSubmit)="publicar(inputImagen)">
       <h2>Nueva publicación</h2>
 
@@ -42,11 +41,6 @@
         </button>
       </div>
     </form>
-  } @else {
-    <p class="aviso">
-      <a routerLink="/login">Iniciá sesión</a> para publicar y dar me gusta.
-    </p>
-  }
 
   <div class="barra">
     <label for="orden">Ordenar por</label>

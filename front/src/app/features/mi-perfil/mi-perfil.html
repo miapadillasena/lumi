@@ -2,19 +2,89 @@
   <h1>Mi perfil</h1>
 
   @if (authService.currentUser(); as usuario) {
-    <div class="perfil">
-      <img [src]="usuario.imagenUrl" alt="Foto de perfil" />
-      <div>
-        <h2>{{ usuario.nombre }} {{ usuario.apellido }}</h2>
-        <p class="usuario">&#64;{{ usuario.nombreUsuario }}</p>
-        <p>{{ usuario.descripcion }}</p>
-        <ul>
-          <li><strong>Correo:</strong> {{ usuario.correo }}</li>
-          <li><strong>Fecha de nacimiento:</strong> {{ usuario.fechaNacimiento | date: 'dd/MM/yyyy' : 'UTC' }}</li>
-          <li><strong>Perfil:</strong> {{ usuario.perfil }}</li>
-        </ul>
+    @if (!editando()) {
+      <div class="perfil">
+        <app-avatar
+          [imagenUrl]="usuario.imagenUrl"
+          [nombre]="usuario.nombre"
+          [apellido]="usuario.apellido"
+          [tamano]="140"
+        />
+        <div class="datos">
+          <h2>{{ usuario.nombre }} {{ usuario.apellido }}</h2>
+          <p class="usuario">&#64;{{ usuario.nombreUsuario }}</p>
+          <p>{{ usuario.descripcion }}</p>
+          <ul>
+            <li><strong>Correo:</strong> {{ usuario.correo }}</li>
+            <li><strong>Fecha de nacimiento:</strong> {{ usuario.fechaNacimiento | date: 'dd/MM/yyyy' : 'UTC' }}</li>
+            <li><strong>Perfil:</strong> {{ usuario.perfil }}</li>
+          </ul>
+          <button type="button" class="editar" (click)="empezarEdicion()">Editar perfil</button>
+        </div>
       </div>
-    </div>
+    } @else {
+      <form class="perfil editar-form" [formGroup]="perfilForm" (ngSubmit)="guardar()">
+        <h2>Editar perfil</h2>
+
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input id="nombre" type="text" formControlName="nombre"
+            [class.input-error]="f.nombre.invalid && f.nombre.touched" />
+          @if (f.nombre.touched && f.nombre.invalid) {
+            <small class="error">El nombre debe tener entre 2 y 100 caracteres</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="apellido">Apellido</label>
+          <input id="apellido" type="text" formControlName="apellido"
+            [class.input-error]="f.apellido.invalid && f.apellido.touched" />
+          @if (f.apellido.touched && f.apellido.invalid) {
+            <small class="error">El apellido debe tener entre 2 y 100 caracteres</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="nombreUsuario">Nombre de usuario</label>
+          <input id="nombreUsuario" type="text" formControlName="nombreUsuario"
+            [class.input-error]="f.nombreUsuario.invalid && f.nombreUsuario.touched" />
+          @if (f.nombreUsuario.touched && f.nombreUsuario.invalid) {
+            <small class="error">El nombre de usuario debe tener entre 3 y 30 caracteres</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="fechaNacimiento">Fecha de nacimiento</label>
+          <input id="fechaNacimiento" type="date" formControlName="fechaNacimiento"
+            [class.input-error]="f.fechaNacimiento.invalid && f.fechaNacimiento.touched" />
+          @if (f.fechaNacimiento.touched && f.fechaNacimiento.invalid) {
+            <small class="error">La fecha de nacimiento es obligatoria</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="descripcion">Descripción</label>
+          <textarea id="descripcion" rows="3" formControlName="descripcion"
+            [class.input-error]="f.descripcion.invalid && f.descripcion.touched"></textarea>
+          @if (f.descripcion.touched && f.descripcion.invalid) {
+            <small class="error">La descripción es obligatoria (máximo 200 caracteres)</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="imagen">Nueva foto de perfil (opcional)</label>
+          <input id="imagen" type="file" accept="image/jpeg,image/png,image/webp"
+            (change)="seleccionarArchivo($event)" />
+        </div>
+
+        <div class="botones">
+          <button type="button" class="secundario" (click)="editando.set(false)">Cancelar</button>
+          <button type="submit" [disabled]="isGuardando()">
+            {{ isGuardando() ? 'Guardando...' : 'Guardar cambios' }}
+          </button>
+        </div>
+      </form>
+    }
 
     <h2 class="titulo-seccion">Mis últimas publicaciones</h2>
     @for (publicacion of ultimas(); track publicacion.id) {
@@ -22,16 +92,30 @@
         <app-publicacion-card [publicacion]="publicacion" [usuarioActualId]="null" />
         <div class="comentarios">
           <strong>Comentarios</strong>
-          <p>Todavía no hay comentarios.</p>
+          @for (comentario of comentarios()[publicacion.id] ?? []; track comentario.id) {
+            <p class="comentario">
+              <span class="autor">&#64;{{ comentario.usuario.nombreUsuario }}</span>
+              {{ comentario.mensaje }}
+              @if (comentario.modificado) {
+                <em>(editado)</em>
+              }
+            </p>
+          } @empty {
+            <p>Todavía no hay comentarios.</p>
+          }
+          <a [routerLink]="['/publicacion', publicacion.id]">Ver publicación y comentarios</a>
         </div>
       </div>
     } @empty {
       <p class="vacio-texto">Todavía no hiciste ninguna publicación.</p>
     }
-  } @else {
-    <div class="perfil vacio">
-      <p>Iniciá sesión para ver los datos de tu perfil.</p>
-      <a routerLink="/login">Ir al login</a>
-    </div>
   }
 </section>
+
+@if (exito()) {
+  <app-modal titulo="Perfil actualizado" mensaje="Tus datos se guardaron correctamente." (cerrar)="exito.set(false)" />
+}
+
+@if (errorMessage()) {
+  <app-modal titulo="No se pudo guardar" [mensaje]="errorMessage()!" tipo="error" (cerrar)="errorMessage.set(null)" />
+}

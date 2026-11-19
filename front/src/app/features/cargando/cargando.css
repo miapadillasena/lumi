@@ -1,0 +1,23 @@
+.cargando {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding-top: 120px;
+  color: var(--texto-suave);
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid var(--primario-claro);
+  border-top-color: var(--primario);
+  border-radius: 50%;
+  animation: girar 0.8s linear infinite;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}

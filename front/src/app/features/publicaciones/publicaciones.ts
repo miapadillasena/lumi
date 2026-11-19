@@ -1,6 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { PublicacionesService } from '../../core/services/publicaciones.service';
 import { apiError } from '../../core/services/api-error';
@@ -10,7 +9,7 @@ import { Modal } from '../../shared/components/modal/modal';
 // componente de la pagina publicaciones
 @Component({
   selector: 'app-publicaciones',
-  imports: [ReactiveFormsModule, RouterLink, PublicacionCard, Modal],
+  imports: [ReactiveFormsModule, PublicacionCard, Modal],
   templateUrl: './publicaciones.html',
   styleUrl: './publicaciones.css',
 })
@@ -81,13 +80,10 @@ export class Publicaciones implements OnInit {
   }
 
   publicar(input: HTMLInputElement) {
-    const usuario = this.authService.currentUser();
-    if (!usuario) return;
     this.publicacionForm.markAllAsTouched();
-    if (this.publicacionForm.invalid) return; // so no hay nadie logueado o el formulario es invalido no hace nada
+    if (this.publicacionForm.invalid) return; // si el formulario es invalido no hace nada
 
     const datos = new FormData();
-    datos.append('usuarioId', usuario.id);
     datos.append('titulo', this.publicacionForm.value.titulo!);
     datos.append('mensaje', this.publicacionForm.value.mensaje!);
     if (this.archivo()) datos.append('imagen', this.archivo()!);
@@ -115,9 +111,8 @@ export class Publicaciones implements OnInit {
     if (!usuario) return;
 
     const peticion = publicacion.meGusta.includes(usuario.id)
-      ? this.publicacionesService.quitarMeGusta(publicacion.id, usuario.id)
-      : this.publicacionesService.darMeGusta(publicacion.id, usuario.id);
-
+      ? this.publicacionesService.quitarMeGusta(publicacion.id)
+      : this.publicacionesService.darMeGusta(publicacion.id);
     peticion.subscribe({
       next: (actualizada) => {
         this.publicaciones.update((lista) =>
@@ -130,10 +125,8 @@ export class Publicaciones implements OnInit {
 
   confirmarEliminar() {
     const publicacion = this.aEliminar();
-    const usuario = this.authService.currentUser();
-    if (!publicacion || !usuario) return;
-
-    this.publicacionesService.eliminar(publicacion.id, usuario.id).subscribe({
+      if (!publicacion) return;
+      this.publicacionesService.eliminar(publicacion.id).subscribe({
       next: () => {
         this.aEliminar.set(null);
         if (this.publicaciones().length === 1 && this.pagina() > 1) {

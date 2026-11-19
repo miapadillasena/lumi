@@ -2,3 +2,14 @@
 <main class="contenido">
   <router-outlet />
 </main>
+
+@if (authService.avisoSesion()) {
+  <app-modal
+    titulo="Tu sesión está por vencer"
+    mensaje="Te quedan 5 minutos de sesión. ¿Querés extenderla?"
+    textoAceptar="Extender"
+    [mostrarCancelar]="true"
+    (cerrar)="extender()"
+    (cancelar)="authService.avisoSesion.set(false)"
+  />
+}

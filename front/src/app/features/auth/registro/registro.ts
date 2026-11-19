@@ -31,7 +31,6 @@ export class Registro {
   });
 
   archivo = signal<File | null>(null);
-  archivoTocado = signal(false);
   isLoading = signal(false);
   errorMessage = signal<string | null>(null);
   exito = signal(false);
@@ -46,7 +45,6 @@ export class Registro {
 
   seleccionarArchivo(event: Event) {
     const input = event.target as HTMLInputElement;
-    this.archivoTocado.set(true);
     if (!input.files || input.files.length === 0) {
       this.archivo.set(null);
       return;
@@ -56,8 +54,7 @@ export class Registro {
 
   onSubmit() {
     this.registroForm.markAllAsTouched();
-    this.archivoTocado.set(true);
-    if (this.registroForm.invalid || this.passwordsDistintas() || !this.archivo()) return;
+        if (this.registroForm.invalid || this.passwordsDistintas()) return;
 
     this.isLoading.set(true);
     const valores = this.registroForm.value;
@@ -70,11 +67,11 @@ export class Registro {
     datos.append('password', valores.password!);
     datos.append('fechaNacimiento', valores.fechaNacimiento!);
     datos.append('descripcion', valores.descripcion!);
-    datos.append('imagen', this.archivo()!);
-      // se arma un FormData porque no se puede mandar JSON
+        if (this.archivo()) datos.append('imagen', this.archivo()!);
+    // se arma un FormData porque no se puede mandar JSON
     this.authService.registro(datos).subscribe({
-      next: (usuario) => {
-        this.authService.iniciarSesion(usuario);
+      next: (sesion) => {
+        this.authService.iniciarSesion(sesion);
         this.isLoading.set(false);
         this.exito.set(true);
       },

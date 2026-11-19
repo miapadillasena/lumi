@@ -16,22 +16,24 @@ export class PublicacionesService {
     if (usuarioId) params = params.set('usuarioId', usuarioId); // es inmutable
     return this.http.get<PaginaPublicaciones>(this.url, { params });
   }
+  
+  obtener(id: string) {
+    return this.http.get<Publicacion>(`${this.url}/${id}`);
+  }
 
   crear(datos: FormData) { // crea un FormData que puede llevar imagen. 
     return this.http.post<Publicacion>(this.url, datos);
   }
 
-  eliminar(id: string, usuarioId: string) {
-    const params = new HttpParams().set('usuarioId', usuarioId); // el back necesita eñ usuarioID para saber si es autor o un admin
-    return this.http.delete<void>(`${this.url}/${id}`, { params });
+  eliminar(id: string) {
+    return this.http.delete<void>(`${this.url}/${id}`);
   }
 
-  darMeGusta(id: string, usuarioId: string) {
-    return this.http.post<Publicacion>(`${this.url}/${id}/me-gusta`, { usuarioId });
+  darMeGusta(id: string) {
+    return this.http.post<Publicacion>(`${this.url}/${id}/me-gusta`, {});
   }
 
-  quitarMeGusta(id: string, usuarioId: string) {
-    const params = new HttpParams().set('usuarioId', usuarioId);
-    return this.http.delete<Publicacion>(`${this.url}/${id}/me-gusta`, { params });
+  quitarMeGusta(id: string) {
+    return this.http.delete<Publicacion>(`${this.url}/${id}/me-gusta`);
   }
 }

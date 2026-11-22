@@ -7,8 +7,8 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { UsuariosModule } from '../usuarios/usuarios.module';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
-
-@Module({
+// modulo de autenticacion, todo lo que se necesita para el registro, login y los tokens
+@Module({ 
   imports: [
     UsuariosModule,
     PassportModule, // activa Passport

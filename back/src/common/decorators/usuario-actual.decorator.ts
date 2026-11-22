@@ -13,4 +13,4 @@ export const UsuarioActual = createParamDecorator( // lo que se ejecuta cada vez
     const req = ctx.switchToHttp().getRequest<Request & { user: UsuarioJwt }>(); // le dice a TS que tiene un user con la fomra de UsuarioJwt
     return campo ? req.user[campo] : req.user;
   },
-);
+); 

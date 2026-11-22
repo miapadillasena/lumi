@@ -69,4 +69,4 @@ export class PublicacionesController {
   ) {
     return this.publicacionesService.quitarMeGusta(id, usuarioId);
   } // el id sale del token en vez del body o la query
-} 
+}  

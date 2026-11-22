@@ -12,12 +12,12 @@ import { PublicacionesService } from './publicaciones.service';
 import { UsuariosService } from '../usuarios/usuarios.service';
 
 type ComentarioDocument = HydratedDocument<Comentario>;
-
+// toda la logica de los comentarios
 @Injectable()
 export class ComentariosService {
   constructor(
     @InjectModel(Comentario.name)
-    private readonly comentarioModel: Model<Comentario>,
+    private readonly comentarioModel: Model<Comentario>, // para consultar la coleccion comentarios 
     private readonly publicaciones: PublicacionesService, // para revisar que pla publiacion exista
     private readonly usuarios: UsuariosService, // para los datos del autos
   ) {}
@@ -31,12 +31,12 @@ export class ComentariosService {
     const encontrados = await this.comentarioModel
       .find({ publicacionId }) // solo los comentarios de esta publicacion
       .sort({ createdAt: -1 }) // del mas nuevo al mas viejo
-      .skip(offset) 
-      .limit(limit + 1)
+      .skip(offset) // saltamos lo que ya se mostro
+      .limit(limit + 1) // trae uno mas, para decir que hay mas
       .exec();
 
-    const hasNext = encontrados.length > limit;
-    const comentarios = encontrados.slice(0, limit);
+    const hasNext = encontrados.length > limit; // esto es lo que hace que se muestre, "cargar mas"
+    const comentarios = encontrados.slice(0, limit); // saca ese que esta de mas para mostrar solo los que pedi
 
     return {
       comentarios: await this.armarRespuesta(comentarios),
@@ -61,7 +61,7 @@ export class ComentariosService {
     datos: ComentarioDto,
     usuarioId: string,
   ) {
-    if (!isObjectIdOrHexString(id)) {
+    if (!isObjectIdOrHexString(id)) { // si el comentario no tiene el formato de Mongo, tira 404
       throw new NotFoundException('Comentario no encontrado');
     }
     const comentario = await this.comentarioModel.findOne({
@@ -75,7 +75,7 @@ export class ComentariosService {
     }
 
     comentario.mensaje = datos.mensaje;
-    comentario.modificado = true;
+    comentario.modificado = true; // lo marca como modificado
     await comentario.save();
     return (await this.armarRespuesta([comentario]))[0];
   }
@@ -103,4 +103,4 @@ export class ComentariosService {
       };
     });
   }
-}
+} 

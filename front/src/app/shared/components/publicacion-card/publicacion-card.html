@@ -20,7 +20,8 @@
   } @else {
     <h3><a [routerLink]="['/publicacion', publicacion.id]">{{ publicacion.titulo }}</a></h3>
   }
-  @if (publicacion.imagenUrl) {
+   <p class="mensaje">{{ publicacion.mensaje }}</p>
+    @if (publicacion.imagenUrl) {
     <img class="imagen" [src]="publicacion.imagenUrl" alt="Imagen de la publicación" />
   }
 

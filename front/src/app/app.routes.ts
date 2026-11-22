@@ -28,7 +28,7 @@ export const routes: Routes = [
       import('./features/publicacion-detalle/publicacion-detalle').then(
         (c) => c.PublicacionDetalle,
       ),
-  },
+  }, 
   {
     path: 'mi-perfil',
     canActivate: [authGuard], // ahora hay que estar logueada para entrar

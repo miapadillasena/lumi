@@ -3,21 +3,21 @@ import { HttpClient } from '@angular/common/http';
 import { switchMap, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Sesion, Usuario } from '../models/usuario.interface';
-
+// maneja toda la sesion
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private http = inject(HttpClient);
+  private http = inject(HttpClient); // peticiones
   private url = environment.apiUrl + '/auth';
   private key = 'lumi-token';
-  private readonly minutosAviso = 10;
-  private contador: ReturnType<typeof setTimeout> | null = null;
+  private readonly minutosAviso = 1; // tiempo para que de el aviso de vencimiento
+  private contador: ReturnType<typeof setTimeout> | null = null; // guarda el setTimeout para poder cancelarlo
 
-  currentUser = signal<Usuario | null>(null);
-  avisoSesion = signal(false);
+  currentUser = signal<Usuario | null>(null); // usuario logueado
+  avisoSesion = signal(false); 
 
   accessToken() {
     return localStorage.getItem(this.key);
-  }
+  } 
 
   login(correo: string, password: string) {
     return this.http.post<Sesion>(this.url + '/login', { correo, password });
@@ -41,14 +41,14 @@ export class AuthService {
     );
   }
 
-  iniciarSesion(sesion: Sesion) {
+  iniciarSesion(sesion: Sesion) { // la llama el login, registro y editar perfil
     this.currentUser.set(sesion.usuario);
-    this.guardarToken(sesion.access_token);
+    this.guardarToken(sesion.access_token); 
   }
 
-  restaurarSesion() {
-    return this.autorizar().pipe(
-      tap((usuario) => this.currentUser.set(usuario)),
+  restaurarSesion() { // la usa la pantalla de carga
+    return this.autorizar().pipe( // valida el token guardado
+      tap((usuario) => this.currentUser.set(usuario)), 
       switchMap(() => this.refrescar()),
     );
   }
@@ -65,7 +65,7 @@ export class AuthService {
     this.detenerContador();
   }
 
-  private guardarToken(token: string) {
+  private guardarToken(token: string) { // guarda el token y reinicia el contador
     localStorage.setItem(this.key, token);
     this.iniciarContador();
   }

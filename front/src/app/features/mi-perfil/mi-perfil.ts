@@ -19,19 +19,19 @@ import { Modal } from '../../shared/components/modal/modal';
   styleUrl: './mi-perfil.css',
 })
 export class MiPerfil implements OnInit {
-  private fb = inject(FormBuilder);
+  private fb = inject(FormBuilder); // formulario para editar
   authService = inject(AuthService);
   private publicacionesService = inject(PublicacionesService);
   private comentariosService = inject(ComentariosService);
 
-  ultimas = signal<Publicacion[]>([]);
-  comentarios = signal<Record<string, Comentario[]>>({});
+  ultimas = signal<Publicacion[]>([]); // las ultimas 3 publicaciones
+  comentarios = signal<Record<string, Comentario[]>>({}); // los comentarios de cada publicacion
 
-  editando = signal(false);
-  isGuardando = signal(false);
-  archivo = signal<File | null>(null);
+  editando = signal(false); // si se muestra los datos o el formulario
+  isGuardando = signal(false); // deshabilita el boton mientras guarda
+  archivo = signal<File | null>(null); // foto nueva
   errorMessage = signal<string | null>(null);
-  exito = signal(false);
+  exito = signal(false); // modales
 
   perfilForm = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
@@ -39,40 +39,40 @@ export class MiPerfil implements OnInit {
     nombreUsuario: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
     fechaNacimiento: ['', [Validators.required]],
     descripcion: ['', [Validators.required, Validators.maxLength(200)]],
-  });
+  }); // correo y contraseña no se pueden editar 
 
   get f() {
     return this.perfilForm.controls;
   }
 
-  ngOnInit() {
+  ngOnInit() { // al abrir la pantalla carga las publicaciones
     this.cargarPublicaciones();
   }
 
   private cargarPublicaciones() {
     const usuario = this.authService.currentUser();
     if (!usuario) return;
-    this.publicacionesService.listar('fecha', 0, 3, usuario.id).subscribe({
-      next: (respuesta) => {
+    this.publicacionesService.listar('fecha', 0, 3, usuario.id).subscribe({ // las ordena por fecha, desde la primeraa, solo las mias
+      next: (respuesta) => { // para cada publicacion, sus comentarios
         this.ultimas.set(respuesta.publicaciones);
         for (const publicacion of respuesta.publicaciones) {
-          this.cargarComentarios(publicacion.id);
+          this.cargarComentarios(publicacion.id); 
         }
       },
     });
   }
 
-  private cargarComentarios(publicacionId: string) {
-    this.comentariosService.listar(publicacionId, 0, 3).subscribe({
+  private cargarComentarios(publicacionId: string) { // trae los 3 mas nuevos
+    this.comentariosService.listar(publicacionId, 0, 3).subscribe({ 
       next: (respuesta) =>
         this.comentarios.update((actual) => ({ ...actual, [publicacionId]: respuesta.comentarios })),
-    });
+    }); // copia lo que ya habia y agrega la lista de esta publicacion
   }
 
-  empezarEdicion() {
+  empezarEdicion() { // lo llama el boton editar perfil
     const usuario = this.authService.currentUser();
     if (!usuario) return;
-    this.perfilForm.setValue({
+    this.perfilForm.setValue({ // carga los datos acutales en el formulario
       nombre: usuario.nombre,
       apellido: usuario.apellido,
       nombreUsuario: usuario.nombreUsuario,

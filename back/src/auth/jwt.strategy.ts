@@ -13,7 +13,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) { // toma la Strateg
       ignoreExpiration: false, // no ignora el vencimiento, si pasa los 15 min, no lo reconoce
       algorithms: ['HS256'], 
     });
-  }
+  } 
 
   validate(payload: UsuarioJwt): UsuarioJwt { // se la llama solo si el token es valido
     return {

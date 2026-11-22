@@ -94,7 +94,7 @@ export class AuthService {
     const sinVacios = Object.fromEntries(
       Object.entries(cambios).filter(([, valor]) => valor !== undefined),
     ); // saco los campos que quedaron como undefined
-
+ 
     const usuario = await this.usuarios.actualizar(id, sinVacios);
     if (!usuario) throw new NotFoundException('El usuario no existe');
 
@@ -115,7 +115,7 @@ export class AuthService {
   }
 
   private generarToken(usuario: HydratedDocument<Usuario>) {
-    const payload: UsuarioJwt = {
+    const payload: UsuarioJwt = { // arma los datos que van adentro del token con la forma de UsuarioJwt
       sub: usuario.id as string,
       correo: usuario.correo,
       nombreUsuario: usuario.nombreUsuario,

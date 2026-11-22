@@ -74,5 +74,5 @@ export class AuthController {
     @UploadedFile() archivo?: Express.Multer.File,
   ) {
     return this.auth.editarPerfil(id, datos, archivo);
-  }
+  } 
 }

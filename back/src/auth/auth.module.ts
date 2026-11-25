@@ -16,7 +16,7 @@ import { CloudinaryService } from '../cloudinary/cloudinary.service';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({ // arma la configuracion
         secret: config.getOrThrow<string>('JWT_SECRET'), // la clave para firmar, si falta no arranca
-        signOptions: { expiresIn: '3m' }, // para que se firme que van a vencer a los 15m 
+        signOptions: { expiresIn: '3m' }, // para que se firme que van a vencer a los 3m 
       }),
     }),
   ],

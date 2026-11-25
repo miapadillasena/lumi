@@ -1,0 +1,27 @@
+.acceso-rapido {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--borde);
+  text-align: center;
+}
+
+.acceso-rapido p {
+  margin: 0 0 10px;
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+}
+
+.botones {
+  display: flex;
+  gap: 10px;
+}
+
+.botones button {
+  flex: 1;
+  padding: 10px;
+}
+
+.secundario {
+  background: var(--primario-claro);
+  color: var(--primario);
+}

@@ -8,9 +8,8 @@
   
     <div>
       <p class="usuario">&#64;{{ publicacion.usuario.nombreUsuario }}</p>
-      <p class="fecha">{{ publicacion.fecha | date: 'dd/MM/yyyy HH:mm' }}</p>
-    </div>
-    @if (esMia()) {
+      <p class="fecha" [title]="publicacion.fecha | date: 'dd/MM/yyyy HH:mm'">{{ publicacion.fecha | tiempoRelativo }}</p>    </div>
+    @if (puedeEliminar()) {
       <button type="button" class="eliminar" (click)="eliminar.emit(publicacion)">Eliminar</button>
     }
   </header>

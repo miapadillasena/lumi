@@ -8,6 +8,7 @@
       [publicacion]="publicacion"
       [usuarioActualId]="authService.currentUser()?.id ?? null"
       [grande]="true"
+      [esAdmin]="authService.esAdmin()"
       (meGusta)="toggleMeGusta($event)"
       (eliminar)="aEliminar.set(true)"
     />
@@ -30,8 +31,8 @@
       </form>
 
       @for (comentario of comentarios(); track comentario.id) {
-        <div class="comentario">
-          <app-avatar
+        <div class="comentario" appResaltar>         
+           <app-avatar
             [imagenUrl]="comentario.usuario.imagenUrl"
             [nombre]="comentario.usuario.nombre"
             [apellido]="comentario.usuario.apellido"
@@ -40,8 +41,7 @@
           <div class="cuerpo">
             <p class="cabecera">
               <span class="usuario">&#64;{{ comentario.usuario.nombreUsuario }}</span>
-              <span class="fecha">{{ comentario.fecha | date: 'dd/MM/yyyy HH:mm' }}</span>
-              @if (comentario.modificado) {
+              <span class="fecha" [title]="comentario.fecha | date: 'dd/MM/yyyy HH:mm'">{{ comentario.fecha | tiempoRelativo }}</span>              @if (comentario.modificado) {
                 <span class="editado">(editado)</span>
               }
             </p>

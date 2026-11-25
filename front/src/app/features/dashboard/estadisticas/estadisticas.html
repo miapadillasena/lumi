@@ -1,0 +1,30 @@
+<section>
+  <h1>Estadísticas</h1>
+
+  <form class="filtros" [formGroup]="fechasForm" (ngSubmit)="cargar()">
+    <label>Desde <input type="date" formControlName="desde" /></label>
+    <label>Hasta <input type="date" formControlName="hasta" /></label>
+    <button type="submit">Ver</button>
+  </form>
+
+  <div class="tarjeta">
+    <h2>Publicaciones por usuario</h2>
+    <canvas #graficoUsuarios></canvas>
+  </div>
+
+  <div class="tarjeta">
+    <h2>Comentarios por día <span class="total">{{ totalComentarios() }} en total</span></h2>
+    <canvas #graficoDias></canvas>
+  </div>
+
+  <div class="tarjeta">
+    <h2>Comentarios por publicación</h2>
+    <div class="torta">
+      <canvas #graficoPublicaciones></canvas>
+    </div>
+  </div>
+</section>
+
+@if (errorMessage()) {
+  <app-modal titulo="Algo salió mal" [mensaje]="errorMessage()!" tipo="error" (cerrar)="errorMessage.set(null)" />
+}

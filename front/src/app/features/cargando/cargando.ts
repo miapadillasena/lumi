@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 // pantalla de carga
 @Component({
@@ -10,6 +10,7 @@ import { AuthService } from '../../core/services/auth.service';
 export class Cargando implements OnInit { // se ejecuta una sola vez apenas se crea el componente
   private authService = inject(AuthService); 
   private router = inject(Router); // para navegar
+  private route = inject(ActivatedRoute);
 
   ngOnInit() {
     if (!this.authService.accessToken()) { // si no hay un token guardado, va directo al login
@@ -17,8 +18,10 @@ export class Cargando implements OnInit { // se ejecuta una sola vez apenas se c
       return;
     }
 
-    this.authService.restaurarSesion().subscribe({ // si hay token llama al servicio, si es valido, devulve los datos del usuario y se guarda en currentUser
-      next: () => this.router.navigate(['/publicaciones'], { replaceUrl: true }), // sale todo bien, me manda a publicaciones
+        const volver = this.route.snapshot.queryParamMap.get('volver') ?? '/publicaciones';
+
+    this.authService.restaurarSesion().subscribe({
+      next: () => this.router.navigateByUrl(volver, { replaceUrl: true }),
       error: () => { 
         this.authService.cerrarSesion(); 
         this.router.navigate(['/login'], { replaceUrl: true });

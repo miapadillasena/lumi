@@ -9,6 +9,7 @@ import { Modal } from '../../../shared/components/modal/modal';
   selector: 'app-login', 
   imports: [ReactiveFormsModule, RouterLink, Modal],
   templateUrl: './login.html',
+  styleUrl: './login.css',
 })
 export class Login {
   private fb = inject(FormBuilder);
@@ -28,6 +29,15 @@ export class Login {
 
   get f() {
     return this.loginForm.controls;
+  }
+  
+  accesoRapido(perfil: 'administrador' | 'usuario') {
+    const cuentas = {
+      administrador: { correo: 'admin@lumi.com', password: 'Admin1234' },
+      usuario: { correo: 'usuario@lumi.com', password: 'Usuario1234' },
+    };
+    this.loginForm.setValue(cuentas[perfil]);
+    this.onSubmit();
   }
 
   onSubmit() { // se ejecuta al poner ingresar

@@ -9,6 +9,7 @@ export interface Usuario {
   descripcion: string;
   imagenUrl: string;
   perfil: 'usuario' | 'administrador';
+  habilitado?: boolean, 
 } 
 
 export interface Sesion {

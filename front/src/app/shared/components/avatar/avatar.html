@@ -2,6 +2,6 @@
   <img [src]="imagenUrl" alt="Foto de perfil" [style.width.px]="tamano" [style.height.px]="tamano" />
 } @else {
   <div class="iniciales" [style.width.px]="tamano" [style.height.px]="tamano" [style.font-size.px]="tamano * 0.4">
-    {{ iniciales() }}
+   {{ nombre | iniciales: apellido }}
   </div>
 }

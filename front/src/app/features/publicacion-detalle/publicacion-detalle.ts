@@ -11,11 +11,13 @@ import { Comentario } from '../../core/models/comentario.interface';
 import { PublicacionCard } from '../../shared/components/publicacion-card/publicacion-card';
 import { Modal } from '../../shared/components/modal/modal';
 import { Avatar } from '../../shared/components/avatar/avatar';
+import { TiempoRelativoPipe } from '../../shared/pipes/tiempo-relativo.pipe';
+import { ResaltarDirective } from '../../shared/directives/resaltar.directive';
+
 // pagina de una publicacion
 @Component({
   selector: 'app-publicacion-detalle',
-  imports: [DatePipe, ReactiveFormsModule, RouterLink, PublicacionCard, Modal, Avatar],
-  templateUrl: './publicacion-detalle.html',
+  imports: [DatePipe, ReactiveFormsModule, RouterLink, PublicacionCard, Modal, Avatar, TiempoRelativoPipe, ResaltarDirective],  templateUrl: './publicacion-detalle.html',
   styleUrl: './publicacion-detalle.css',
 })
 export class PublicacionDetalle implements OnInit {

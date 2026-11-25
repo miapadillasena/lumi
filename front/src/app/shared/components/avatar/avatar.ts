@@ -1,17 +1,15 @@
 import { Component, Input } from '@angular/core';
+import { InicialesPipe } from '../../pipes/iniciales.pipe';
 
 @Component({
   selector: 'app-avatar',
+  imports: [InicialesPipe],
   templateUrl: './avatar.html',
   styleUrl: './avatar.css',
 })
-export class Avatar { // los datos que le pasan
+export class Avatar {
   @Input() imagenUrl = '';
   @Input() nombre = '';
   @Input() apellido = '';
   @Input() tamano = 44;
-
-  iniciales() {
-    return ((this.nombre[0] ?? '') + (this.apellido[0] ?? '')).toUpperCase();
-  } // para hacer las iniciales. 
 }

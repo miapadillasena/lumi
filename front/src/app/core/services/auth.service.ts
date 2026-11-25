@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { switchMap, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -14,6 +14,7 @@ export class AuthService {
 
   currentUser = signal<Usuario | null>(null); // usuario logueado
   avisoSesion = signal(false); 
+  esAdmin = computed(() => this.currentUser()?.perfil === 'administrador');
 
   accessToken() {
     return localStorage.getItem(this.key);

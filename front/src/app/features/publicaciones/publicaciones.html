@@ -57,6 +57,7 @@
       <app-publicacion-card
         [publicacion]="publicacion"
         [usuarioActualId]="authService.currentUser()?.id ?? null"
+        [esAdmin]="authService.esAdmin()"
         (meGusta)="toggleMeGusta($event)"
         (eliminar)="aEliminar.set($event)"
       />

@@ -6,7 +6,7 @@
 @if (authService.avisoSesion()) {
   <app-modal
     titulo="Tu sesión está por vencer"
-    mensaje="Te quedan 1 minutos de sesión. ¿Querés extenderla?"
+    mensaje="Te quedan 1 minuto de sesión. ¿Querés extenderla?"
     textoAceptar="Extender"
     [mostrarCancelar]="true"
     (cerrar)="extender()"

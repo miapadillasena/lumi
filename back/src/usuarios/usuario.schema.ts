@@ -26,7 +26,10 @@ export class Usuario {
    @Prop({ default: '' })
   imagenUrl: string;
 
-  @Prop({ default: 'usuario', enum: ['usuario', 'administrador'] }) // si no se manda algo, queda "usuario", y enum limita los valores posibles a usuario o administrador. 
+  @Prop({ default: 'usuario', enum: ['usuario', 'administrador'] }) // ...tu comentario...
   perfil: string;
+
+  @Prop({ default: true }) // si no se manda nada, el usuario arranca habilitado
+  habilitado: boolean;
 }
 export const UsuarioSchema = SchemaFactory.createForClass(Usuario); // convierte la clase en el schema real que usa Mongoose

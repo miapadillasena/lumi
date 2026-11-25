@@ -9,7 +9,7 @@ export class AuthService {
   private http = inject(HttpClient); // peticiones
   private url = environment.apiUrl + '/auth';
   private key = 'lumi-token';
-  private readonly minutosAviso = 1; // tiempo para que de el aviso de vencimiento
+  private readonly minutosAviso = 2; // tiempo para que de el aviso de vencimiento
   private contador: ReturnType<typeof setTimeout> | null = null; // guarda el setTimeout para poder cancelarlo
 
   currentUser = signal<Usuario | null>(null); // usuario logueado

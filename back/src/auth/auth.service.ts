@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   UnauthorizedException,
+  ForbiddenException
 } from '@nestjs/common';import { JwtService } from '@nestjs/jwt';
 import { HydratedDocument } from 'mongoose';
 import * as bcrypt from 'bcrypt';
@@ -40,6 +41,7 @@ export class AuthService {
       descripcion: datos.descripcion,
       imagenUrl: imagenUrl,
       perfil: 'usuario',
+      habilitado: true,
     }); // guarda el usuario.
 
     return {
@@ -60,6 +62,12 @@ export class AuthService {
       throw new UnauthorizedException('Credenciales inválidas');
     } // si no coincide responde 401
 
+    if (!usuario.habilitado) {
+      throw new ForbiddenException(
+        'Tu usuario está deshabilitado. Comunicate con un administrador',
+      );
+    }
+
     return {
       access_token: await this.generarToken(usuario),
       usuario: this.toResponse(usuario),
@@ -68,7 +76,9 @@ export class AuthService {
 
   async autorizar(id: string) {
     const usuario = await this.usuarios.buscarPorId(id);
-    if (!usuario) throw new UnauthorizedException('El usuario no existe');
+    if (!usuario || !usuario.habilitado) {
+      throw new UnauthorizedException('El usuario no existe o está deshabilitado');
+    }
     return this.toResponse(usuario); // para cuando llego aca, el guard ya valido 
                                      // el token, busco el usuario por id
   }
@@ -105,6 +115,10 @@ export class AuthService {
   } 
   
   async refrescar(usuario: UsuarioJwt) { // recibe los datos del token que ya valido
+    const actual = await this.usuarios.buscarPorId(usuario.sub);
+    if (!actual || !actual.habilitado) {
+      throw new UnauthorizedException('El usuario no existe o está deshabilitado');
+    }
     const payload: UsuarioJwt = { 
       sub: usuario.sub,
       correo: usuario.correo,

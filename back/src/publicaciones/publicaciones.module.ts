@@ -6,6 +6,8 @@ import { PublicacionesController } from './publicaciones.controller';
 import { PublicacionesService } from './publicaciones.service';
 import { ComentariosController } from './comentarios.controller';
 import { ComentariosService } from './comentarios.service';
+import { EstadisticasController } from './estadisticas.controller';
+import { EstadisticasService } from './estadisticas.service';
 import { UsuariosModule } from '../usuarios/usuarios.module';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
@@ -17,7 +19,7 @@ import { CloudinaryService } from '../cloudinary/cloudinary.service';
       { name: Comentario.name, schema: ComentarioSchema },
     ]),
   ],
-  controllers: [PublicacionesController, ComentariosController],
-  providers: [PublicacionesService, ComentariosService, CloudinaryService],
+  controllers: [PublicacionesController, ComentariosController, EstadisticasController],
+  providers: [PublicacionesService, ComentariosService, EstadisticasService, CloudinaryService],
 })
 export class PublicacionesModule {}
